@@ -20,7 +20,7 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self testRACCommand04];
+    [self testRACLiftSelector06];
 }
 
 - (void)testRACSinal01 {
@@ -119,7 +119,50 @@
 }
 
 - (void)testRACMulticastConnection05 {
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        NSLog(@"发送请求");
+        [subscriber sendNext:@111];
+        return nil;
+    }];
+    [signal subscribeNext:^(id  _Nullable x) {
+        NSLog(@"订阅者1---%@",x);
+    }];
+    [signal subscribeNext:^(id  _Nullable x) {
+        NSLog(@"订阅者2---%@",x);
+    }];
     
+    RACSignal *signalMulti = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        NSLog(@"发送请求");
+        [subscriber sendNext:@222];
+        return nil;
+    }];
+    RACMulticastConnection *connect = [signalMulti publish];
+    [connect.signal subscribeNext:^(id  _Nullable x) {
+        NSLog(@"muti订阅者1---%@",x);
+    }];
+    [connect.signal subscribeNext:^(id  _Nullable x) {
+        NSLog(@"muti订阅者2---%@",x);
+    }];
+    [connect connect];
+}
+
+- (void)testRACLiftSelector06 {
+    RACSignal *signal1 = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        NSLog(@"请求111");
+        [subscriber sendNext:@111];
+        return nil;
+    }];
+    RACSignal *signal2 = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        NSLog(@"请求222");
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [subscriber sendNext:@222];
+        });
+        return nil;
+    }];
+    [self rac_liftSelector:@selector(handleAllSignalWithR1:r2:) withSignalsFromArray:@[signal1,signal2]];
+}
+- (void)handleAllSignalWithR1:(id)r1 r2:(id)r2 {
+    NSLog(@"处理数据---%@----%@",r1, r2);
 }
 
 @end

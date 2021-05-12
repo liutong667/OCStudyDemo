@@ -2,7 +2,7 @@
 //  main.m
 //  ReactiveObjcStudy
 //
-//  Created by liutong29 on 2021/5/10.
+//  Created by liutong on 2021/5/10.
 //
 
 #import <UIKit/UIKit.h>

@@ -7,9 +7,10 @@
 
 #import "ViewController.h"
 #import <ReactiveObjC/ReactiveObjC.h>
+#import "TestRac.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong) TestRac *testRac;
 @end
 
 @implementation ViewController
@@ -20,7 +21,10 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self testRACLiftSelector06];
+    if (!self.testRac) {
+        self.testRac = [TestRac new];
+    }
+    [self.testRac execute];
 }
 
 - (void)testRACSinal01 {

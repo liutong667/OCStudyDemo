@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		5678963F26493873002D9C7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5678963E26493873002D9C7B /* Assets.xcassets */; };
 		5678964226493873002D9C7B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5678964026493873002D9C7B /* LaunchScreen.storyboard */; };
 		5678964526493873002D9C7B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5678964426493873002D9C7B /* main.m */; };
+		56BCB1C9264E1EFF006D4797 /* TestRac.m in Sources */ = {isa = PBXBuildFile; fileRef = 56BCB1C8264E1EFF006D4797 /* TestRac.m */; };
 		803B81E040B27FA43C5D9DF2 /* Pods_ReactiveObjcStudy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 146D2A5791820C064292D0A3 /* Pods_ReactiveObjcStudy.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,8 @@
 		5678964126493873002D9C7B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5678964326493873002D9C7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5678964426493873002D9C7B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		56BCB1C7264E1EFF006D4797 /* TestRac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestRac.h; sourceTree = "<group>"; };
+		56BCB1C8264E1EFF006D4797 /* TestRac.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestRac.m; sourceTree = "<group>"; };
 		E03F3929E2012A5B84F2E498 /* Pods-ReactiveObjcStudy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveObjcStudy.release.xcconfig"; path = "Target Support Files/Pods-ReactiveObjcStudy/Pods-ReactiveObjcStudy.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,7 +56,6 @@
 				3D9BF6003E3786373FB4F4A7 /* Pods-ReactiveObjcStudy.debug.xcconfig */,
 				E03F3929E2012A5B84F2E498 /* Pods-ReactiveObjcStudy.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -89,6 +91,8 @@
 				5678964026493873002D9C7B /* LaunchScreen.storyboard */,
 				5678964326493873002D9C7B /* Info.plist */,
 				5678964426493873002D9C7B /* main.m */,
+				56BCB1C7264E1EFF006D4797 /* TestRac.h */,
+				56BCB1C8264E1EFF006D4797 /* TestRac.m */,
 			);
 			path = ReactiveObjcStudy;
 			sourceTree = "<group>";
@@ -215,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5678963A26493871002D9C7B /* ViewController.m in Sources */,
+				56BCB1C9264E1EFF006D4797 /* TestRac.m in Sources */,
 				5678963426493871002D9C7B /* AppDelegate.m in Sources */,
 				5678964526493873002D9C7B /* main.m in Sources */,
 				5678963726493871002D9C7B /* SceneDelegate.m in Sources */,

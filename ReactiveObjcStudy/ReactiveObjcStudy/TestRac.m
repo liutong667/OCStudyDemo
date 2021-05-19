@@ -11,6 +11,8 @@
 
 @implementation TestRac
 
+//参考：https://www.jianshu.com/p/e10e5ca413b7
+
 - (void)testBind01 {
     RACSignal *signal = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
         [subscriber sendNext:@111];
@@ -188,10 +190,110 @@
 }
 
 - (void)testRACOperation07 {
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        [subscriber sendNext:@111];
+        [subscriber sendNext:@222];
+        [subscriber sendNext:@222];
+        [subscriber sendNext:@333333];
+        [subscriber sendError:nil];
+        [subscriber sendNext:@222];
+        [subscriber sendNext:@6666666];
+//        [subscriber sendError:nil];
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    
+    [[signal filter:^BOOL(NSNumber *value) {
+        return value.stringValue.length > 3;
+    }] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"filter订阅者---%@",x);
+    }];
+    
+    [[signal ignore:@111] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"ignore订阅者---%@",x);
+    }];
+    
+    [[signal distinctUntilChanged] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"distinct订阅者---%@",x);
+    }];
+    //take:从开始一共取N次的信号
+    [[signal take:2] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"take订阅者---%@",x);
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"take订阅者error");
+    } completed:^{
+        NSLog(@"take订阅者done");
+    }];
+    //takeLast:取最后N次的信号,前提条件，订阅者必须调用完成，因为只有完成，就知道总共有多少信号
+    [[signal takeLast:2] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"takeLast订阅者---%@",x);
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"takeLast订阅者error");
+    } completed:^{
+        NSLog(@"takeLast订阅者done");
+    }];
+    
+    [[signal takeUntil:self.rac_willDeallocSignal] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"willDealloc订阅者---%@",x);
+    }];
+    
+    [[signal skip:2] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"skip订阅者---%@",x);
+    }];
+}
+
+- (void)testSwitchToLatest08 {
+    // 获取信号中信号最近发出信号，订阅最近发出的信号。
+    // 注意switchToLatest：只能用于信号中的信号
+    RACSubject *signalOfSignal = [RACSubject subject];
+    RACSubject *signal = [RACSubject subject];
+    [[signalOfSignal switchToLatest] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"switchToLatest订阅者----%@",x);
+    }];
+    
+    [signalOfSignal sendNext:signal];
+    [signal sendNext:@111];
+}
+
+- (void)testDoNextAndDoCompleted09 {
+    //doNext: 执行Next之前，会先执行这个Block
+    //doCompleted: 执行sendCompleted之前，会先执行这个Block
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        [subscriber sendNext:@111];
+        [subscriber sendNext:@222];
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    
+    [[[signal doNext:^(id  _Nullable x) {
+        NSLog(@"doNext----%@",x);
+    }] doCompleted:^{
+        NSLog(@"doCompleted----");
+    }] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"订阅者----%@",x);
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"订阅者error----%@",error);
+    } completed:^{
+        NSLog(@"订阅者done----");
+    }];
     
 }
 
+- (void)testTherad10 {
+    RACSignal *signal = [[RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+        [subscriber sendNext:@111];
+        [subscriber sendCompleted];
+        return nil;
+    }] timeout:1 onScheduler:[RACScheduler currentScheduler]];
+    [signal subscribeNext:^(id  _Nullable x) {
+        NSLog(@"订阅者----%@",x);
+    } error:^(NSError * _Nullable error) {
+        NSLog(@"订阅者error----%@",error);
+    } completed:^{
+        NSLog(@"订阅者done----");
+    }];
+}
 - (void)execute {
-    [self testCombineLatest06];
+    [self testTherad10];
 }
 @end
